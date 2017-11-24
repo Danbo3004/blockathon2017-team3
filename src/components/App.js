@@ -1,7 +1,13 @@
 import React from 'react'
 import { default as Web3} from 'web3';
 import { default as contract } from 'truffle-contract'
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+
+import Login           from './Login.js'
+import Host            from './Host.js'
+import HostConfirm     from './HostConfirm.js'
+import Traveler        from './Traveler.js'
+import TravelerConfirm from './TravelerConfirm.js'
 
 import VotingJSON from '../contracts/Voting.json'
 
@@ -50,24 +56,15 @@ export default class App extends React.Component {
 
   render() {
     return (
-      // <table>
-      //   <thead>
-      //     <tr>
-      //       <th>Candidate</th>
-      //       <th>Votes</th>
-      //     </tr>
-      //   </thead>
-      //   <tbody>
-      //     {
-      //       this.state.candidateList.map((candidate, index) => (
-      //         <tr key={index}>
-      //           <td>{candidate.name}</td>
-      //           <td>{candidate.vote}</td>
-      //         </tr>
-      //       ))
-      //     }
-      //   </tbody>
-      // </table>
+      <Router>
+        <Switch>
+          <Route exact path='/'           component={Login}/>
+          <Route path='/host'             component={Host}/>
+          <Route path='/host-confirm'     component={HostConfirm}/>
+          <Route path='/traveler'         component={Traveler}/>
+          <Route path='/traveler-confirm' component={TravelerConfirm}/>
+        </Switch>
+      </Router>
     )
   }
 }
