@@ -65,9 +65,9 @@ export default class App extends React.Component {
           <Route path='/partner'          component={withRouter(PartnerLogin)}/>
           <Route path='/host'             component={Host}/>
           <Route path='/host-confirm'     component={HostConfirm}/>
-          <Route exact path='/traveler/edit' component={TravelerEdit}/>
-          <Route path='/traveler'         component={Traveler}/>
-          <Route path='/traveler-confirm' component={TravelerConfirm}/>
+          <Route exact path='/traveler/edit' component={withRouter(TravelerEdit)}/>
+          <Route path='/traveler'         component={withRouter(Traveler)}/>
+          <Route path='/traveler-confirm' component={withRouter(TravelerConfirm)}/>
         </Switch>
       </Router>
     )

@@ -7,8 +7,6 @@ import {
   Button,
 } from 'reactstrap'
 import styled from 'styled-components'
-import { withRouter } from 'react-router'
-
 
 const Wrapper = styled(Container)`
   max-width: 700px !important;
@@ -99,4 +97,4 @@ class Traveler extends React.Component {
   }
 }
 
-export default withRouter(Traveler)
+export default Traveler

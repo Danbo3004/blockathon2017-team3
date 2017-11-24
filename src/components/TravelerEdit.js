@@ -10,7 +10,6 @@ import {
   Input,
 } from 'reactstrap'
 import styled from 'styled-components'
-import { withRouter } from 'react-router'
 
 const Wrapper = styled(Container)`
   max-width: 700px !important;
@@ -133,4 +132,4 @@ class TravelerEdit extends React.Component {
   }
 }
 
-export default withRouter(TravelerEdit)
+export default TravelerEdit
