@@ -10,3 +10,21 @@ $primary-color: #faebd7;
   background-color: green;
   height: 25px;
 }
+
+input {
+  flex: 1;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+select {
+  flex: 1;
+}
+
+button {
+  color: #ec3434;
+  font-size: 14px;
+  padding: 2px 20px;
+  border-radius: 4px;
+  background-color: transparent;
+}

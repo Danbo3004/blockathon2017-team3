@@ -1,0 +1,52 @@
+.host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    .form {
+        padding: 30px;
+        display: flex;
+        .left-side {
+            width: 150px;
+            overflow: hidden;
+            #files {
+                color: transparent;
+            }
+            img {
+                width: 150px;
+            }
+        }
+        .right-side {
+            flex: 1;
+            .form-group {
+                margin-bottom: 20px;
+                display: flex;
+                label {
+                    width: 80px;
+                    text-align: right;
+                    margin-right: 10px;
+                }
+                input {
+                    flex: 1;
+                    font-size: 14px;
+                    border-radius: 4px;
+                }
+                textarea {
+                    flex: 1;
+                    font-size: 14px;
+                    border-radius: 4px;
+                }
+                select {
+                    flex: 1;
+                }
+                button {
+                    color: #ec3434;
+                    font-size: 14px;
+                    padding: 2px 20px;
+                    border-radius: 4px;
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+}
