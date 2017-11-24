@@ -8,6 +8,7 @@ import PartnerLogin    from './PartnerLogin.js'
 import Host            from './Host.js'
 import HostConfirm     from './HostConfirm.js'
 import Traveler        from './Traveler.js'
+import TravelerEdit    from './TravelerEdit.js'
 import TravelerConfirm from './TravelerConfirm.js'
 
 import VotingJSON from '../contracts/Voting.json'
@@ -64,6 +65,7 @@ export default class App extends React.Component {
           <Route path='/partner'          component={withRouter(PartnerLogin)}/>
           <Route path='/host'             component={Host}/>
           <Route path='/host-confirm'     component={HostConfirm}/>
+          <Route exact path='/traveler/edit' component={TravelerEdit}/>
           <Route path='/traveler'         component={Traveler}/>
           <Route path='/traveler-confirm' component={TravelerConfirm}/>
         </Switch>
