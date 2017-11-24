@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class Login extends Component {
+export default class PartnerLogin extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -11,16 +11,16 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div className='login'>
+            <div className='partner-login'>
                 <div className='form'>
-                    <div className='title'><h1><span>P</span>to<span>G</span>ether</h1></div>
+                    <div className='title'><h1><span>P</span>to<span>G</span>ether for Partner</h1></div>
                     <div className='form-group'>
                         <label>ID</label>
-                        <input type='text' onChange={e => this.setState({ id: e.currentTarget.value })}/>
+                        <input type='text' onChange={e => this.setState({ id: e.currentTarget.value })} />
                     </div>
                     <div className='form-group'>
                         <label>Password</label>
-                        <input type='password' onChange={e => this.setState({ password: e.currentTarget.value })}/>
+                        <input type='password' onChange={e => this.setState({ password: e.currentTarget.value })} />
                     </div>
                     <div className='form-group'>
                         <label></label>
@@ -33,8 +33,8 @@ export default class Login extends Component {
 
     _submitHandler = () => {
         const { id, password } = this.state
-        if(id == 'traveler' && password == '123') {
-            this.props.history.push('/traveler')
+        if (id == 'host' && password == '123') {
+            this.props.history.push('/host')
         }
     }
 }
