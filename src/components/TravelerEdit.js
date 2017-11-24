@@ -18,6 +18,10 @@ const Wrapper = styled(Container)`
   h2.title-profile {
     margin-bottom: 30px;
   }
+
+  button {
+    cursor: pointer;
+  }
 `
 
 const UserAvatar = styled.div`
@@ -109,7 +113,7 @@ class TravelerEdit extends React.Component {
                 <Col sm={{ size: 'auto' }}>
                   <Button
                     outline
-                    color="primary"
+                    color="secondary"
                     onClick={this.goBack}
                   >
                     Cancel

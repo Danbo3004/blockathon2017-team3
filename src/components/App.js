@@ -10,6 +10,7 @@ import HostConfirm     from './HostConfirm.js'
 import Traveler        from './Traveler.js'
 import TravelerEdit    from './TravelerEdit.js'
 import TravelerConfirm from './TravelerConfirm.js'
+import CreatePlan      from './CreatePlan.js'
 
 import VotingJSON from '../contracts/Voting.json'
 import { withRouter } from 'react-router';
@@ -65,9 +66,11 @@ export default class App extends React.Component {
           <Route path='/partner'          component={withRouter(PartnerLogin)}/>
           <Route path='/host'             component={Host}/>
           <Route path='/host-confirm'     component={HostConfirm}/>
+
           <Route exact path='/traveler/edit' component={withRouter(TravelerEdit)}/>
-          <Route path='/traveler'         component={withRouter(Traveler)}/>
+          <Route path='/traveler' component={withRouter(Traveler)}/>
           <Route path='/traveler-confirm' component={withRouter(TravelerConfirm)}/>
+          <Route path='/create-plan' component={withRouter(CreatePlan)}/>
         </Switch>
       </Router>
     )

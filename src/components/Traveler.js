@@ -15,6 +15,10 @@ const Wrapper = styled(Container)`
   h2.title-profile {
     margin-bottom: 30px;
   }
+
+  button {
+    cursor: pointer;
+  }
 `
 
 const UserAvatar = styled.div`
@@ -45,6 +49,10 @@ const UserBio = styled.p`
   line-height: 1.5;
 `
 
+const CenterButton = styled(Row)`
+  justify-content: center;
+`
+
 class Traveler extends React.Component {
   constructor(props) {
     super(props)
@@ -56,12 +64,17 @@ class Traveler extends React.Component {
     }
 
     this.gotoEdit = this.gotoEdit.bind(this)
+    this.gotoCreatePlan = this.gotoCreatePlan.bind(this)
   }
 
   gotoEdit() {
     this.props.history.push('/traveler/edit', {
       ...this.state,
-    });
+    })
+  }
+
+  gotoCreatePlan() {
+    this.props.history.push('/create-plan')
   }
 
   render() {
@@ -92,6 +105,14 @@ class Traveler extends React.Component {
             <UserBio>{userBio}</UserBio>
           </Col>
         </Row>
+        <CenterButton>
+          <Button
+            color="primary"
+            onClick={this.gotoCreatePlan}
+          >
+            Create Your Plan
+          </Button>
+        </CenterButton>
       </Wrapper>
     )
   }
