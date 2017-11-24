@@ -21,9 +21,10 @@
     "reactstrap": "^5.0.0-alpha.4",
     "styled-components": "^2.2.3",
     "truffle-contract": "^3.0.1",
-    "web3": "0.20.2"
-  },
-  "devDependencies": {
+    "web3": "0.20.2",
+    "webpack": "^1.13.0",
+    "webpack-dev-middleware": "^1.2.0",
+    "webpack-hot-middleware": "^2.2.0",
     "autoprefixer": "^6.0.3",
     "babel-cli": "^6.4.0",
     "babel-core": "^6.26.0",
@@ -51,10 +52,10 @@
     "react-transform-hmr": "^1.0.0",
     "sass-loader": "^3.2.0",
     "stats-webpack-plugin": "^0.2.1",
-    "style-loader": "^0.12.4",
-    "webpack": "^1.13.0",
-    "webpack-dev-middleware": "^1.2.0",
-    "webpack-hot-middleware": "^2.2.0"
+    "style-loader": "^0.12.4" 
+  },
+  "devDependencies": {
+    
   },
   "keywords": [
     "node",
