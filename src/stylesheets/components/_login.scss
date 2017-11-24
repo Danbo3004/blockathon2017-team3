@@ -1,0 +1,43 @@
+.login {
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    align-items: center;
+    .form {
+        border: 1px solid white;
+        border-radius: 6px;
+        padding: 0 30px 30px 30px;
+        .title {
+            text-align: center;
+            span {
+                color: red;
+            }
+        }
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            label {
+                width: 70px;
+                text-align: right;
+                margin-right: 10px;
+            }
+            input {
+                flex: 1;
+                font-size: 14px;
+                border-radius: 4px;
+            }
+            select {
+                flex: 1;
+            }
+            button {
+                color: #ec3434;
+                font-size: 14px;
+                padding: 2px 20px;
+                border-radius: 4px;
+                background-color: transparent;
+            }
+        }
+    }
+}
