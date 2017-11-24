@@ -21,7 +21,9 @@
     "reactstrap": "^5.0.0-alpha.4",
     "truffle-contract": "^3.0.1",
     "web3": "0.20.2",
-    "webpack": "^1.13.0"    
+    "webpack": "^1.13.0",
+    "webpack-dev-middleware": "^1.2.0",
+    "webpack-hot-middleware": "^2.2.0"   
   },
   "devDependencies": {
     "autoprefixer": "^6.0.3",
@@ -52,8 +54,6 @@
     "sass-loader": "^3.2.0",
     "stats-webpack-plugin": "^0.2.1",
     "style-loader": "^0.12.4",
-    "webpack-dev-middleware": "^1.2.0",
-    "webpack-hot-middleware": "^2.2.0"
   },
   "keywords": [
     "node",
