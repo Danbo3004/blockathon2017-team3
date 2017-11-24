@@ -10,11 +10,6 @@
     "build": "rm -rf ./dist/* && set NODE_ENV=production && webpack --config ./webpack.production.config.js --progress --profile --colors",
     "testrpc": "ganache-cli"
   },
-  "keywords": [
-    "node",
-    "heroku",
-    "express"
-  ],
   "dependencies": {
     "bootstrap": "4.0.0-beta.2",
     "express": "^4.16.2",
@@ -59,5 +54,10 @@
     "webpack": "^1.13.0",
     "webpack-dev-middleware": "^1.2.0",
     "webpack-hot-middleware": "^2.2.0"
-  }
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ]
 }
