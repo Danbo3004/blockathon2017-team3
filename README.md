@@ -42,6 +42,6 @@ To start with some pre-funded account(s)
 
 - Wallet : Rinkerby Network on MyEtherWallet
 
-Private key: dad04374836230232f8d595899f9b4ebef0ccc988d72b2512c1ca93ea5e447b3
+Private key: bc38c9c15a83387e6544299373083c1583426218dd0d97840292f55dad09a6a1
 
-Address: 0x5Eb0ED579df809E527cBdc5f03b3563cd5c4a77B
+Address: 0xEdaF7259cADb03a7e3C3DC5cA9a69A9A2bd17681
