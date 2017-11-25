@@ -13,10 +13,10 @@ exports.getAll = (req, res) => {
 
 exports.get = (req, res) => {
     try {
-        var id = req.query.id
+        var _id = req.query.id
         var db = require('../../database')
         var Transportation = require('../models/transportation')(db)
-        Transportation.findOne({id}, (err, transportation) => {
+        Transportation.findOne({_id}, (err, transportation) => {
             if(err) res.send('Error: ' + err)
             res.send(transportation)
         })
