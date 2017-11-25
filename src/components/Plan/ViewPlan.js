@@ -64,7 +64,7 @@ class CreatePlan extends React.Component {
   }
 
   gotoTraveler() {
-    this.props.history.push('/traveler')
+    this.props.history.push('/traveller')
   }
 
   render() {

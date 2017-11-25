@@ -33,8 +33,8 @@ export default class Login extends Component {
 
     _submitHandler = () => {
         const { id, password } = this.state
-        if(id == 'traveler' && password == '123') {
-            this.props.history.push('/traveler')
+        if(id == 'traveller' && password == '123') {
+            this.props.history.push('/traveller')
         }
     }
 }
