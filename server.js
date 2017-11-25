@@ -37,10 +37,20 @@ if (isDeveloping) {
     heartbeat: 2000,
   }));
 
-  app.use(express.static(__dirname + '/dist'));
-  app.get('/*', function (request, response) {
-    response.sendFile(path.resolve(__dirname, 'dist/index.html'))
-  })
+  const fs = middleware.fileSystem;
+  app.get('*', (req, res) => {
+    fs.readFile(path.join(compiler.outputPath, 'index.html'), (err, file) => {
+      if (err) {
+        res.sendStatus(404);
+      } else {
+        res.send(file.toString());
+      }
+    });
+  });
+  // app.use(express.static(__dirname + '/dist'));
+  // app.get('/*', function (request, response) {
+  //   response.sendFile(path.resolve(__dirname, 'dist/index.html'))
+  // })
 } else {
   app.use(express.static(__dirname + '/dist'));
   app.get('/*', function (request, response) {

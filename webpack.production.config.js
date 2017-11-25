@@ -50,7 +50,7 @@ module.exports = {
       loader: 'json'
     }, {
       test: /\.css$/,
-      loader: ExtractTextPlugin.extract('style', 'css?modules!postcss')
+      loader: ExtractTextPlugin.extract('style', 'css!postcss')
     }, {
       test: /\.scss$/,
       loader: ExtractTextPlugin.extract('style', 'css!sass')
