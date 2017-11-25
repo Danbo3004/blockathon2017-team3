@@ -67,7 +67,8 @@ exports.addTripMate = (req, res) => {
         var db = require('../../database')
         var Plan = require('../models/plan')(db)
         Plan.findOne({ _id }).exec((err, plan) => {
-            if(Array.isArray(plan.tripMates)) {
+            if(err) res.send('Error: ' + err)
+            if(!plan.tripMates || Array.isArray(plan.tripMates)) {
                 plan.tripMates = []
                 plan.tripMates.push(data.tripMate)
             } else {
