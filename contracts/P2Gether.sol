@@ -11,6 +11,7 @@ contract P2Gether {
         uint256 value;
         uint256 total;
         uint endTime;
+        uint status;
     }
 
     Plan[] plans;
@@ -35,7 +36,7 @@ contract P2Gether {
         owner = msg.sender;
     }
 
-    function createPlan() payable public returns (address, address[], uint256) {
+    function createPlan() payable public returns (bool) {
 
         require(msg.value > 0);
 
@@ -46,38 +47,35 @@ contract P2Gether {
             joinList : joinList,
             value: msg.value,
             endTime: now + 1 weeks,
-            total : msg.value
+            total : msg.value,
+            status : PLAN_STAUS_WAITING
         }));
 
         plans[plans.length-1].joinList.push(msg.sender);
 
         PlanCreated();
 
-        return (
-            plans[plans.length-1].hostAddress, 
-            plans[plans.length-1].joinList,
-            plans[plans.length-1].value
-        );
-
+        return true;
     }
 
-    function joinPlan(uint _planIndex) payable public returns (address, address[], uint256) {
+    function joinPlan(uint _planIndex) payable public returns (bool) {
+
         require(msg.value == plans[_planIndex].value);
         require(now <= plans[_planIndex].endTime);
+        require(plans[_planIndex].status == PLAN_STAUS_WAITING);
+
         plans[_planIndex].joinList.push(msg.sender);
         plans[_planIndex].total += msg.value;
 
         PlanJoined();
 
-        return (
-            plans[_planIndex].hostAddress, 
-            plans[_planIndex].joinList,
-            plans[_planIndex].value
-        );
+        return true;
     }
 
     // cancel plan
-    function cancelPlan(uint _planIndex) public {
+    function cancelPlan(uint _planIndex) payable public returns (bool) {
+
+        require(plans[_planIndex].status == PLAN_STAUS_WAITING);
 
         bool check = false;
         uint index = 0;
@@ -119,12 +117,19 @@ contract P2Gether {
             }
         }
 
+        plans[_planIndex].status = PLAN_STAUS_CANCELLED;
+
+        return true;
     }
 
-    function finishPlan(uint _planIndex) public ownerOnly {
+    function finishPlan(uint _planIndex) payable public ownerOnly returns (bool) {
+        require(plans[_planIndex].status == PLAN_STAUS_WAITING);
         require(now > plans[_planIndex].endTime);
 
         plans[_planIndex].hostAddress.transfer(plans[_planIndex].total);  
+        plans[_planIndex].status = PLAN_STAUS_FINISHED;
+
+        return true;
     }
 
 }
