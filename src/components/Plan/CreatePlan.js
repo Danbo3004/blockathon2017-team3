@@ -89,7 +89,7 @@ const accArr = [
 
 const meansArr = ['Bike', 'Bicyle', 'Car', 'Train', 'Plane']
 
-const apiBase = 'http://localhost:5000'
+const apiBase = localStorage.origin
 
 class CreatePlan extends React.Component {
   constructor(props) {

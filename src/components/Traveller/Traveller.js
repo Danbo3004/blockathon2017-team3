@@ -87,7 +87,7 @@ class Traveller extends React.Component {
   }
 
   componentDidMount() {
-    request('http://localhost:5000/api/v1/plans', {
+    request(`${localStorage.origin}/api/v1/plans`, {
       method: 'GET',
     }).then((result) => {
       this.setState({
