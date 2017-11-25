@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import request from '../utils/request'
 
 export default class Login extends Component {
     constructor(props) {
@@ -6,7 +7,20 @@ export default class Login extends Component {
         this.state = {
             id          : '',
             password    : '',
+            users       : [],
         }
+    }
+
+    componentWillMount() {
+        const apiBase = 'http://localhost:5000/api/v1'
+        request(`${apiBase}/users`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        }).then((users) => {
+            this.setState({users})
+        }).catch((err) => {
+            console.log(err)
+        })
     }
 
     render() {
@@ -32,9 +46,10 @@ export default class Login extends Component {
     }
 
     _submitHandler = () => {
-        const { id, password } = this.state
-        if(id == 'traveller' && password == '123') {
-            this.props.history.push('/traveller')
-        }
+        const { id, password, users } = this.state
+        if(password != 123) alert('wrong password')
+        const owner = users.find(user => user.email == id)
+        localStorage.setItem('owner', owner._id)
+        this.props.history.push('/traveller')
     }
 }

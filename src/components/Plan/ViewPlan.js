@@ -100,6 +100,7 @@ class ViewPlan extends React.Component {
         transportation: transportation._id,
         accommodation: accommodation._id,
         calendar: calendar._id,
+        owner: localStorage.owner || ''
       })
     }).then(() => {
       window.contract.deployed()
