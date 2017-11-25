@@ -45,6 +45,7 @@ contract('P2GetherTestGeneric', function (accounts) {
         _user3: accounts[4],
     };
 
+    let plainId = "123a";
     let p2Gether;
 
     /* Do something before every `describe` method */
@@ -58,27 +59,27 @@ contract('P2GetherTestGeneric', function (accounts) {
 
     it("The P2Gether can't create plan if send 0 ether", async function () {
         // should be closed
-        await assertExpectedError(p2Gether.createPlan.sendTransaction({ from: args._user1, to: p2Gether.address, value: 0 }));
+        await assertExpectedError(p2Gether.createPlan.sendTransaction(plainId, { from: args._user1, to: p2Gether.address, value: 0 }));
     });
 
     it("The P2Gether can create plan if send > 0 ether", async function () {
-        plan = await p2Gether.createPlan.sendTransaction({ from: args._user1, to: p2Gether.address, value: toWei(2) });
+        plan = await p2Gether.createPlan.sendTransaction(plainId, { from: args._user1, to: p2Gether.address, value: toWei(2) });
         assert.equal(web3.eth.getBalance(p2Gether.address).toString(), toWei(2));
     });
 
     it("The P2Gether can join plan if send != price", async function () {
-        plan = await p2Gether.createPlan.sendTransaction({ from: args._user1, to: p2Gether.address, value: toWei(2) });
+        plan = await p2Gether.createPlan.sendTransaction(plainId, { from: args._user1, to: p2Gether.address, value: toWei(2) });
         await assertExpectedError(p2Gether.joinPlan.sendTransaction(0, { from: args._user2, to: p2Gether.address, value: toWei(1) }));
     });
 
     it("The P2Gether can join plan if send = price", async function () {
-        plan = await p2Gether.createPlan.sendTransaction({ from: args._user1, to: p2Gether.address, value: toWei(2) });
-        await p2Gether.joinPlan.sendTransaction(0, { from: args._user2, to: p2Gether.address, value: toWei(2) });
+        plan = await p2Gether.createPlan.sendTransaction(plainId, { from: args._user1, to: p2Gether.address, value: toWei(2) });
+        await p2Gether.joinPlan.sendTransaction(plainId, { from: args._user2, to: p2Gether.address, value: toWei(2) });
         assert.equal(web3.eth.getBalance(p2Gether.address).toString(), toWei(4));
     });
 
     it("The P2Gether can create plan if send > 0 ether", async function () {
-        plan = await p2Gether.createPlan.sendTransaction({ from: args._user1, to: p2Gether.address, value: toWei(2) });
+        plan = await p2Gether.createPlan.sendTransaction(plainId, { from: args._user1, to: p2Gether.address, value: toWei(2) });
         assert.equal(web3.eth.getBalance(p2Gether.address).toString(), toWei(2));
     });
 
