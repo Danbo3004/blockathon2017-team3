@@ -7,6 +7,7 @@ import {
   Button,
 } from 'reactstrap'
 import styled from 'styled-components'
+import request from '../../utils/request'
 
 const Wrapper = styled(Container)`
   max-width: 700px !important;
@@ -65,6 +66,14 @@ class Traveller extends React.Component {
 
     this.gotoEdit = this.gotoEdit.bind(this)
     this.gotoCreatePlan = this.gotoCreatePlan.bind(this)
+  }
+
+  componentDidMount() {
+    request('http://localhost:5000/api/v1/plans', {
+      method: 'GET',
+    }).then((result) => {
+      console.log(result)
+    })
   }
 
   gotoEdit() {

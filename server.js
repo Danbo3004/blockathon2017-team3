@@ -12,6 +12,11 @@ const multer = require('multer')
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const app = express();
 
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+require('./server/router')(app)
+
 if (isDeveloping) {
   const compiler = webpack(config);
   const middleware = webpackMiddleware(compiler, {
@@ -31,21 +36,17 @@ if (isDeveloping) {
   app.use(webpackHotMiddleware(compiler, {
     heartbeat: 2000,
   }));
-  // app.get('*', function response(req, res) {
-  //   res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')));
-  //   res.end();
-  // });
+
+  app.use(express.static(__dirname + '/dist'));
+  app.get('/*', function (request, response) {
+    response.sendFile(path.resolve(__dirname, 'dist/index.html'))
+  })
 } else {
   app.use(express.static(__dirname + '/dist'));
-  app.get('/', function response(req, res) {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
-  });
+  app.get('/*', function (request, response) {
+    response.sendFile(path.resolve(__dirname, 'dist/index.html'))
+  })
 }
-
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }));
-
-require('./server/router')(app)
 
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'), function onStart(err) {

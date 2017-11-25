@@ -1,7 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import * as Rs from 'reactstrap'
 import styled from 'styled-components'
 import classnames from 'classnames'
+import { withRouter } from 'react-router-dom'
+import request from '../../utils/request.js'
 
 const Wrapper = styled(Rs.Container)`
   max-width: 700px !important;
@@ -52,18 +55,22 @@ const BottomButtons = styled(Rs.Row)`
   margin: 20px 0;
 `
 
-class CreatePlan extends React.Component {
+const apiBase = 'http://localhost:5000/api/v1'
+
+class ViewPlan extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       modal: false,
+      account: '',
       eth: 0,
     }
 
     this.toggle = this.toggle.bind(this)
     this.ethToDeposit = this.ethToDeposit.bind(this)
     this.backtoCreatePlan = this.backtoCreatePlan.bind(this)
-    this.gotoTraveler = this.gotoTraveler.bind(this)
+    this.createTransaction = this.createTransaction.bind(this)
+    this.gotoTraveller = this.gotoTraveller.bind(this)
   }
 
   toggle() {
@@ -76,12 +83,57 @@ class CreatePlan extends React.Component {
     this.props.history.push('/plan/create')
   }
 
-  gotoTraveler() {
-    this.props.history.push('/traveller')
-  }
-
   ethToDeposit(value) {
     this.setState({ eth: value })
+  }
+
+  createTransaction() {
+    const eth = this.state.eth
+    const transportation = JSON.parse(localStorage.getItem('transportation'))
+    const accommodation = JSON.parse(localStorage.getItem('accommodation'))
+    const calendar = JSON.parse(localStorage.getItem('calendar'))
+
+    request(`${apiBase}/plan`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        transportation: transportation._id,
+        accommodation: accommodation._id,
+        calendar: calendar._id,
+      })
+    }).then(() => {
+      window.contract.deployed()
+        .then((instance) => {
+          return instance.sendTransaction({
+            from: '0xd113c526d60e472898124607fe87b87e6c8cba7e',
+            to: instance.address,
+            value: window.web3.toWei(eth, 'ether'),
+            gas: 300000,
+          })
+        })
+        this.props.history.push('/traveller')
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+
+  gotoTraveller() {
+    const transportation = JSON.parse(localStorage.getItem('transportation'))
+    const accommodation = JSON.parse(localStorage.getItem('accommodation'))
+    const calendar = JSON.parse(localStorage.getItem('calendar'))
+
+    request(`${apiBase}/plan`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        transportation: transportation._id,
+        accommodation: accommodation._id,
+        calendar: calendar._id,
+      })
+    }).then((response) => {
+      console.log(response)
+      this.props.history.push('/traveller')
+    })
   }
 
   render() {
@@ -182,17 +234,19 @@ class CreatePlan extends React.Component {
             <Rs.InputGroup>
               <Rs.Input placeholder="ex: 1 ETH" onChange={(ev) => this.ethToDeposit(ev.target.value)} />
               <Rs.InputGroupButton>
-                <Rs.Button onClick={(ev) => console.log('deposit', this.state.eth)}>Deposit</Rs.Button>
+                <Rs.Button onClick={this.createTransaction}>Deposit</Rs.Button>
               </Rs.InputGroupButton>
             </Rs.InputGroup>
           </Rs.ModalBody>
-          <Rs.ModalFooter>
-            <Rs.Button color="primary" onClick={this.toggle}>Submit</Rs.Button>
-          </Rs.ModalFooter>
+          {
+            // <Rs.ModalFooter>
+            //   <Rs.Button color="primary" onClick={this.gotoTraveller}>Submit</Rs.Button>
+            // </Rs.ModalFooter>
+          }
         </Rs.Modal>
       </Wrapper>
     )
   }
 }
 
-export default CreatePlan
+export default withRouter(ViewPlan)
