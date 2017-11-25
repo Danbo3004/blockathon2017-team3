@@ -55,7 +55,7 @@ const BottomButtons = styled(Rs.Row)`
   margin: 20px 0;
 `
 
-const apiBase = 'http://localhost:5000/api/v1'
+const apiBase = `${localStorage.origin}/api/v1`
 
 class ViewPlan extends React.Component {
   constructor(props) {

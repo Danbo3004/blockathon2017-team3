@@ -12,7 +12,7 @@ export default class Login extends Component {
     }
 
     componentWillMount() {
-        const apiBase = 'http://localhost:5000/api/v1'
+        const apiBase = `${localStorage.origin}/api/v1`
         request(`${apiBase}/users`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }

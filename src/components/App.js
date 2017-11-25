@@ -27,6 +27,10 @@ window.contract = contract(ContractJSON)
 window.contract.setProvider(web3.currentProvider)
 
 class App extends React.Component {
+  constructor(props) {
+    super(props)
+    localStorage.origin = location.origin
+  }
   render() {
     return (
       <Router>
