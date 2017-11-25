@@ -7,7 +7,8 @@ var ObjectId = Schema.ObjectId
 var Plan = new Schema({
     transportation  : { type: ObjectId, ref: "Transportation" },
     calendar        : { type: ObjectId, ref: "Calendar" },
-    accommodation   : { type: ObjectId, ref: "Accommodation"}
+    accommodation   : { type: ObjectId, ref: "Accommodation"},
+    contractAddress : { type: String, default: ''},
 })
 
 module.exports = (db) => {
