@@ -13,7 +13,7 @@ exports.getAll = (req, res) => {
 
 exports.get = (req, res) => {
     try {
-        var id = req.params.id
+        var id = req.query.id
         var db = require('../../database')
         var Transportation = require('../models/transportation')(db)
         Transportation.findOne({id}, (err, transportation) => {
