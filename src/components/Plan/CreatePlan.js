@@ -166,7 +166,6 @@ class CreatePlan extends React.Component {
           <Rs.CardTitle>Chose your Hotel</Rs.CardTitle>
           <Rs.Col sm="12">
             <p>Base on your selected place, we recommend you some hotels.</p>
-
             <CustomCardRow>
               <Rs.Col sm="4">
                 <Rs.Card>
@@ -202,24 +201,21 @@ class CreatePlan extends React.Component {
         </WrapperBlock>
 
         <BottomButtons>
-          <Rs.Col sm={{ size: 'auto' }}>
-            <Rs.Button
-              outline
-              color="secondary"
-              onClick={this.gotoTraveler}
-            >
-              Cancel
-            </Rs.Button>
-          </Rs.Col>
-          <Rs.Col sm={{ size: 'auto' }}>
-            <Rs.Button
-              type="submit"
-              color="primary"
-              onClick={this.gotoView}
-            >
-              Create Plan
-            </Rs.Button>
-          </Rs.Col>
+          <Rs.Button
+            outline
+            color="secondary"
+            onClick={this.gotoTraveler}
+            style={{ marginRight: 10 }}
+          >
+            Cancel
+          </Rs.Button>
+          <Rs.Button
+            type="submit"
+            color="primary"
+            onClick={this.gotoView}
+          >
+            OK
+          </Rs.Button>
         </BottomButtons>
       </Wrapper>
     )

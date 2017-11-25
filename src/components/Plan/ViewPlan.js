@@ -55,7 +55,12 @@ const BottomButtons = styled(Rs.Row)`
 class CreatePlan extends React.Component {
   constructor(props) {
     super(props)
+    this.backtoCreatePlan = this.backtoCreatePlan.bind(this)
     this.gotoTraveler = this.gotoTraveler.bind(this)
+  }
+
+  backtoCreatePlan() {
+    this.props.history.push('/plan/create')
   }
 
   gotoTraveler() {
@@ -122,10 +127,18 @@ class CreatePlan extends React.Component {
 
         <BottomButtons>
           <Rs.Button
+            outline
+            color="secondary"
+            onClick={this.backtoCreatePlan}
+            style={{ marginRight: 10 }}
+          >
+            Cancel
+          </Rs.Button>
+          <Rs.Button
             color="primary"
             onClick={this.gotoTraveler}
           >
-            OK
+            Create plan
           </Rs.Button>
         </BottomButtons>
       </Wrapper>
