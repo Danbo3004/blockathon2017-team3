@@ -2,6 +2,10 @@ import React from 'react'
 import {
   Container,
   Card,
+  CardImg,
+  CardBody,
+  CardTitle,
+  CardText,
   Row,
   Col,
   Button,
@@ -59,6 +63,7 @@ class Traveller extends React.Component {
     super(props)
     const locationState = props.location.state
     this.state = {
+      plans: [],
       userAvatar: locationState ? locationState.userAvatar : 'https://s3.amazonaws.com/uifaces/faces/twitter/mlane/128.jpg',
       userName: locationState ? locationState.userName : 'Dang Kieu',
       userBio: locationState ? locationState.userBio : 'I\'ve lived in Tokyo for more than ten years, working in the fashion industry and running Tokyo Fashionista Events. This has given me many connections to amazing people and great nightlife experiences, and I\'m excited to share them both with you.',
@@ -72,7 +77,9 @@ class Traveller extends React.Component {
     request('http://localhost:5000/api/v1/plans', {
       method: 'GET',
     }).then((result) => {
-      console.log(result)
+      this.setState({
+        plans: result,
+      })
     })
   }
 
@@ -122,6 +129,20 @@ class Traveller extends React.Component {
             Create Your Plan
           </Button>
         </CenterButton>
+
+        <Row>
+          { this.state.plans && this.state.plans.map((plan) => (
+            <Col sm="4">
+              <Card>
+                <CardImg top width="100%" src={plan.calendar.destination.image || ''} alt="Card image cap" />
+                <CardBody>
+                  <CardTitle>{plan.calendar.destination.name || ''}</CardTitle>
+                  <Button>Join</Button>
+                </CardBody>
+              </Card>
+            </Col>
+          ))}
+        </Row>
       </Wrapper>
     )
   }

@@ -106,7 +106,7 @@ class ViewPlan extends React.Component {
       window.contract.deployed()
         .then((instance) => {
           return instance.sendTransaction({
-            from: '0xd113c526d60e472898124607fe87b87e6c8cba7e',
+            from: '0x01991cb9430641e5869b2ff99849e201a69ddbc3',
             to: instance.address,
             value: window.web3.toWei(eth, 'ether'),
             gas: 300000,
