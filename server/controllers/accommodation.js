@@ -3,11 +3,25 @@ exports.getAll = (req, res) => {
         var db = require('../../database')
         var Accommodation = require('../models/accommodation')(db)
         Accommodation.find({}, (err, accommodations) => {
-            if(err) resizeBy.send('Error: ' + err)
+            if(err) res.send('Error: ' + err)
             res.send(accommodations)
         })
     } catch(e) {
         res.send('Error' + e.message);
+    }
+}
+
+exports.get = (req, res) => {
+    try {
+        var id = req.params.id
+        var db = require('../../database')
+        var Accommodation = require('../models/accommodation')(db)
+        Accommodation.findOne({ id }, (err, accommodation) => {
+            if (err) res.send('Error: ' + err)
+            res.send(accommodation)
+        })
+    } catch (e) {
+        res.send('Error: ' + e.message);
     }
 }
 
