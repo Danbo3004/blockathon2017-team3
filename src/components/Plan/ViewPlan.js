@@ -55,8 +55,21 @@ const BottomButtons = styled(Rs.Row)`
 class CreatePlan extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      modal: false,
+      eth: 0,
+    }
+
+    this.toggle = this.toggle.bind(this)
+    this.ethToDeposit = this.ethToDeposit.bind(this)
     this.backtoCreatePlan = this.backtoCreatePlan.bind(this)
     this.gotoTraveler = this.gotoTraveler.bind(this)
+  }
+
+  toggle() {
+    this.setState((prevState) => ({
+      modal: !prevState.modal
+    }))
   }
 
   backtoCreatePlan() {
@@ -65,6 +78,10 @@ class CreatePlan extends React.Component {
 
   gotoTraveler() {
     this.props.history.push('/traveller')
+  }
+
+  ethToDeposit(value) {
+    this.setState({ eth: value })
   }
 
   render() {
@@ -141,11 +158,38 @@ class CreatePlan extends React.Component {
           </Rs.Button>
           <Rs.Button
             color="primary"
-            onClick={this.gotoTraveler}
+            onClick={this.toggle}
           >
-            Create plan
+            Share
           </Rs.Button>
         </BottomButtons>
+
+        <Rs.Modal isOpen={this.state.modal} toggle={this.toggle}>
+          <Rs.ModalHeader toggle={this.toggle}>Share Plan</Rs.ModalHeader>
+          <Rs.ModalBody>
+            <Rs.FormGroup>
+              <Rs.Input type="select" name="select" id="exampleSelect">
+                <option>Facebook</option>
+                <option>Twitter</option>
+              </Rs.Input>
+            </Rs.FormGroup>
+            <Rs.ModalBody>
+              <img
+                style={{ width: '50%' }}
+                src='https://i.pinimg.com/736x/14/e4/69/14e46913085f15a6f0303f915b096830--vietnam-map-vietnam-route.jpg'
+              />
+            </Rs.ModalBody>
+            <Rs.InputGroup>
+              <Rs.Input placeholder="ex: 1 ETH" onChange={(ev) => this.ethToDeposit(ev.target.value)} />
+              <Rs.InputGroupButton>
+                <Rs.Button onClick={(ev) => console.log('deposit', this.state.eth)}>Deposit</Rs.Button>
+              </Rs.InputGroupButton>
+            </Rs.InputGroup>
+          </Rs.ModalBody>
+          <Rs.ModalFooter>
+            <Rs.Button color="primary" onClick={this.toggle}>Submit</Rs.Button>
+          </Rs.ModalFooter>
+        </Rs.Modal>
       </Wrapper>
     )
   }

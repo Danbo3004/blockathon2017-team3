@@ -54,6 +54,21 @@ const BottomButtons = styled(Rs.Row)`
   margin: 20px 0;
 `
 
+const desArr = [
+  {
+    name: 'Đà Lạt',
+    image: 'https://cdn3.ivivu.com/2013/09/top-5-khu-resort-da-lat-thich-hop-dua-nhau-di-tron-o-khu-ho-tuyen-lam-ivivu-14.jpg',
+  },
+  {
+    name: 'Hà Nội',
+    image: 'http://img.cdn2.vietnamnet.vn/Images/english/2016/12/23/09/20161223094029-1.jpg',
+  },
+  {
+    name: 'Đà Nẵng',
+    image: 'http://static.asiawebdirect.com/m/bangkok/portals/vietnam/shared/teasersL/da-nang/top10s/top10-da-nang-attractions/teaserMultiLarge/imageHilight/da-nang-attractions.jpg',
+  }
+]
+
 const accArr = [
   {
     name: 'Balchik hotel',
@@ -70,21 +85,6 @@ const accArr = [
     image: 'https://images.unsplash.com/photo-1468824357306-a439d58ccb1c?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D',
     price: 2000,
   },
-]
-
-const desArr = [
-  {
-    name: 'Hyatt Regency',
-    image: 'https://images.unsplash.com/photo-1505343011179-ffb744ab9bef?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D',
-  },
-  {
-    name: 'Mee Mountain',
-    image: 'https://images.unsplash.com/photo-1508922450598-2f5b1193950a?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D',
-  },
-  {
-    name: 'Haiku Stairs',
-    image: 'https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D',
-  }
 ]
 
 const meansArr = ['Bike', 'Bicyle', 'Car', 'Train', 'Plane']
@@ -155,7 +155,7 @@ class CreatePlan extends React.Component {
         accommodationPromise,
         callendarPromise,
       ]).then((response) => {
-        console.log(response)
+        // console.log(response)
         localStorage.setItem('transportation', JSON.stringify(response[0]))
         localStorage.setItem('accommodation', JSON.stringify(response[1]))
         localStorage.setItem('calendar', JSON.stringify(response[2]))
@@ -242,6 +242,7 @@ class CreatePlan extends React.Component {
                     type="text"
                     name="timeFrom"
                     placeholder="dd/mm/yyyy"
+                    defaultValue="25/11/2017"
                     onChange={(e) => this.handleDateChange('from', e.target.value)}
                   />
                 </Rs.Col>
@@ -251,6 +252,7 @@ class CreatePlan extends React.Component {
                     type="text"
                     name="timeTo"
                     placeholder="dd/mm/yyyy"
+                    defaultValue="30/11/2017"
                     onChange={(e) => this.handleDateChange('to', e.target.value)}
                   />
                 </Rs.Col>
