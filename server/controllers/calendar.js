@@ -16,9 +16,9 @@ exports.get = (req, res) => {
         var id = req.params.id
         var db = require('../../database')
         var Calendar = require('../models/calendar')(db)
-        Calendar.findOne({ id }, (err, calendars) => {
+        Calendar.findOne({ id }, (err, calendar) => {
             if (err) res.send('Error: ' + err)
-            res.send(calendars)
+            res.send(calendar)
         })
     } catch (e) {
         res.send('Error: ' + e.message);
@@ -27,7 +27,6 @@ exports.get = (req, res) => {
 
 exports.create = function (req, res) {
     try {
-        debugger
         var data = req.body
         var db = require('../../database')
         var Calendar = require('../models/calendar')(db);

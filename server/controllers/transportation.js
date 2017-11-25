@@ -16,9 +16,9 @@ exports.get = (req, res) => {
         var id = req.params.id
         var db = require('../../database')
         var Transportation = require('../models/transportation')(db)
-        Transportation.findOne({id}, (err, transportations) => {
+        Transportation.findOne({id}, (err, transportation) => {
             if(err) res.send('Error: ' + err)
-            res.send(transportations)
+            res.send(transportation)
         })
     } catch (e) {
         res.send('Error: ' + e.message);

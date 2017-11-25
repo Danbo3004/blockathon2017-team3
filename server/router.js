@@ -22,5 +22,10 @@ module.exports = function (app) {
     router.get('/callendar', callendar.get)
     router.post('/callendar', callendar.create)
 
+    var plan = require('./controllers/plan')
+    router.get('/plans', plan.getAll)
+    router.get('/plan', plan.get)
+    router.post('/plan', plan.create)
+
     app.use('/api/v1', router)
 }
