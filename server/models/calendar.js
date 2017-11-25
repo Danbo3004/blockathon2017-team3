@@ -8,3 +8,7 @@ var Calendar = new Schema({
     from            : { type: Date, default: Date.now()},
     to              : { type: Date, default: Date.now()},
 })
+
+module.exports = (db) => {
+    return db.model('Calendar', Calendar)
+}
