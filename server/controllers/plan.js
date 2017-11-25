@@ -2,7 +2,14 @@ exports.getAll = (req, res) => {
     try {
         var db = require('../../database')
         var Plan = require('../models/plan')(db)
-        Plan.find({}, (err, plans) => {
+        var Transportation = require('../models/transportation')(db)
+        var Calendar = require('../models/calendar')(db)
+        var Accommodation = require('../models/accommodation')(db)
+        Plan.find({})
+            .populate('transportation')
+            .populate('calendar')
+            .populate('accommodation')
+            .exec((err, plans) => {
             if (err) res.send('Error: ' + err)
             res.send(plans)
         })
