@@ -13,14 +13,14 @@ exports.getAll = (req, res) => {
 
 exports.get = (req, res) => {
     try {
-        var id = req.query.id
+        var _id = req.query.id
         var db = require('../../database')
         var Plan = require('../models/plan')(db)
         var Transportation = require('../models/transportation')(db)
         var Calendar = require('../models/calendar')(db)
         var Accommodation = require('../models/accommodation')(db)
 
-        Plan.findOne({ id })
+        Plan.findOne({ _id })
             .populate('transportation')
             .populate('calendar')
             .populate('accommodation')
