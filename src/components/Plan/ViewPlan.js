@@ -68,6 +68,10 @@ class CreatePlan extends React.Component {
   }
 
   render() {
+    const transportation = JSON.parse(localStorage.getItem('transportation'))
+    const accommodation = JSON.parse(localStorage.getItem('accommodation'))
+    const calendar = JSON.parse(localStorage.getItem('calendar'))
+
     return (
       <Wrapper>
         <h2>Your Complete Plan</h2>
@@ -79,8 +83,9 @@ class CreatePlan extends React.Component {
           </Rs.Col>
           <Rs.Col sm="12">
             <Rs.ListGroup>
-              <Rs.ListGroupItem>Bicyle</Rs.ListGroupItem>
-              <Rs.ListGroupItem>Bike</Rs.ListGroupItem>
+              { transportation.means.map(item => (
+                <Rs.ListGroupItem key={item}>{item}</Rs.ListGroupItem>)
+              )}
             </Rs.ListGroup>
           </Rs.Col>
         </Rs.Row>
@@ -94,9 +99,9 @@ class CreatePlan extends React.Component {
             <CustomCardRow>
               <Rs.Col sm="4">
                 <Rs.Card>
-                  <Rs.CardImg top width="100%" src="https://images.unsplash.com/photo-1496153615838-861aed350146?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D" alt="" />
+                  <Rs.CardImg top width="100%" src={calendar.destination.image} alt="" />
                   <Rs.CardBody>
-                    <Rs.CardSubtitle>Atlnafeadh</Rs.CardSubtitle>
+                    <Rs.CardSubtitle>{calendar.destination.name}</Rs.CardSubtitle>
                   </Rs.CardBody>
                 </Rs.Card>
               </Rs.Col>
@@ -113,10 +118,10 @@ class CreatePlan extends React.Component {
             <CustomCardRow>
               <Rs.Col sm="4">
                 <Rs.Card>
-                  <Rs.CardImg top width="100%" src="https://images.unsplash.com/photo-1440151050977-247552660a3b?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D" />
+                  <Rs.CardImg top width="100%" src={accommodation.image} />
                   <Rs.CardBody>
-                    <Rs.CardSubtitle>Balchik hotel</Rs.CardSubtitle>
-                    <Rs.CardText>$500 per night</Rs.CardText>
+                    <Rs.CardSubtitle>{accommodation.name}</Rs.CardSubtitle>
+                    <Rs.CardText>${accommodation.price} per night</Rs.CardText>
                   </Rs.CardBody>
                 </Rs.Card>
               </Rs.Col>

@@ -2,6 +2,8 @@ import React from 'react'
 import * as Rs from 'reactstrap'
 import styled from 'styled-components'
 
+import request from '../../utils/request.js'
+
 const Wrapper = styled(Rs.Container)`
   max-width: 700px !important;
   margin: 40px auto;
@@ -52,19 +54,158 @@ const BottomButtons = styled(Rs.Row)`
   margin: 20px 0;
 `
 
+const accArr = [
+  {
+    name: 'Balchik hotel',
+    image: 'https://images.unsplash.com/photo-1440151050977-247552660a3b?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D',
+    price: 1000,
+  },
+  {
+    name: 'Atlantis hotel',
+    image: 'https://images.unsplash.com/photo-1489516408517-0c0a15662682?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D',
+    price: 1500,
+  },
+  {
+    name: 'Dubai hotel',
+    image: 'https://images.unsplash.com/photo-1468824357306-a439d58ccb1c?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D',
+    price: 2000,
+  },
+]
+
+const desArr = [
+  {
+    name: 'Hyatt Regency',
+    image: 'https://images.unsplash.com/photo-1505343011179-ffb744ab9bef?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D',
+  },
+  {
+    name: 'Mee Mountain',
+    image: 'https://images.unsplash.com/photo-1508922450598-2f5b1193950a?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D',
+  },
+  {
+    name: 'Haiku Stairs',
+    image: 'https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D',
+  }
+]
+
+const meansArr = ['Bike', 'Bicyle', 'Car', 'Train', 'Plane']
+
+const apiBase = 'http://localhost:5000'
+
 class CreatePlan extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      means: [],
+      accommodation: {},
+      calendar: {
+        destination: {},
+        from: '',
+        to: '',
+      },
+    }
+
+    this.convertDate = this.convertDate.bind(this)
+    this.handleAccommodationChange = this.handleAccommodationChange.bind(this)
+    this.handleDestinationChange = this.handleDestinationChange.bind(this)
+    this.handleDateChange = this.handleDateChange.bind(this)
+    this.handleCheckBoxChange = this.handleCheckBoxChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
     this.gotoView = this.gotoView.bind(this)
-    this.gotoTraveler = this.gotoTraveler.bind(this)
+    this.gotoTraveller = this.gotoTraveller.bind(this)
+  }
+
+  convertDate(date) {
+    const newDate = date.split('/')
+    return new Date(newDate[2], newDate[1], newDate[0])
+  }
+
+  handleSubmit() {
+    const header = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+
+    // convert from/to
+    this.setState({
+      calendar: {
+        ...this.state.calendar,
+        from: this.convertDate(this.state.calendar.from),
+        to: this.convertDate(this.state.calendar.to),
+      }
+    }, () => {
+      const transportationPromise = request(`${apiBase}/api/v1/transportation`, {
+        ...header,
+        body: JSON.stringify({ means: this.state.means }),
+      })
+
+      const accommodationPromise = request(`${apiBase}/api/v1/accommodation`, {
+        ...header,
+        body: JSON.stringify(this.state.accommodation),
+      })
+
+      const callendarPromise = request(`${apiBase}/api/v1/callendar`, {
+        ...header,
+        body: JSON.stringify(this.state.calendar),
+      })
+
+      Promise.all([
+        transportationPromise,
+        accommodationPromise,
+        callendarPromise,
+      ]).then((response) => {
+        console.log(response)
+        localStorage.setItem('transportation', JSON.stringify(response[0]))
+        localStorage.setItem('accommodation', JSON.stringify(response[1]))
+        localStorage.setItem('calendar', JSON.stringify(response[2]))
+        this.gotoView()
+      })
+    })
+  }
+
+  handleCheckBoxChange(value) {
+    const { means } = this.state
+
+    if (means.includes(value)) {
+      const idx = means.indexOf(value)
+      const newMeans = means.slice(0, idx).concat(means.slice(idx + 1))
+      this.setState({ means: newMeans })
+    } else {
+      this.setState({ means: [...means, value] })
+    }
+  }
+
+  handleDateChange(key, value) {
+    this.setState({
+      calendar: {
+        ...this.state.calendar,
+        [key]: value,
+      }
+    })
+  }
+
+  handleDestinationChange(value) {
+    this.setState({
+      calendar: {
+        ...this.state.calendar,
+        destination: value,
+      }
+    })
+  }
+
+  handleAccommodationChange(value) {
+    this.setState({
+      accommodation: value,
+    })
   }
 
   gotoView() {
     this.props.history.push('/plan/view')
   }
 
-  gotoTraveler() {
-    this.props.history.push('/traveler')
+  gotoTraveller() {
+    this.props.history.push('/traveller')
   }
 
   render() {
@@ -76,22 +217,16 @@ class CreatePlan extends React.Component {
         <WrapperBlock>
           <Rs.CardTitle>Chose your Transportation</Rs.CardTitle>
           <Rs.Col sm="12">
-            <Rs.FormGroup check>
-              <Rs.Label check>
-                <Rs.Input type="checkbox" /> Bicyle
-              </Rs.Label>
-              <Rs.Label check>
-                <Rs.Input type="checkbox" /> Bike
-              </Rs.Label>
-              <Rs.Label check>
-                <Rs.Input type="checkbox" /> Car
-              </Rs.Label>
-              <Rs.Label check>
-                <Rs.Input type="checkbox" /> Train
-              </Rs.Label>
-              <Rs.Label check>
-                <Rs.Input type="checkbox" /> Plane
-              </Rs.Label>
+            <Rs.FormGroup>
+              { meansArr.map((item) => (
+                <Rs.Label key={item} check>
+                  <Rs.Input
+                    type="checkbox"
+                    value={item}
+                    onChange={() => this.handleCheckBoxChange(item)}
+                  /> {item}
+                </Rs.Label>
+              ))}
             </Rs.FormGroup>
           </Rs.Col>
         </WrapperBlock>
@@ -103,60 +238,35 @@ class CreatePlan extends React.Component {
               <Rs.Row>
                 <Rs.Col sm="6">
                   <Rs.Label for="timeFrom">From</Rs.Label>
-                  <Rs.Input type="text" name="timeFrom" placeholder="dd/mm/yyyy" />
+                  <Rs.Input
+                    type="text"
+                    name="timeFrom"
+                    placeholder="dd/mm/yyyy"
+                    onChange={(e) => this.handleDateChange('from', e.target.value)}
+                  />
                 </Rs.Col>
                 <Rs.Col sm="6">
                   <Rs.Label for="timeTo">To</Rs.Label>
-                  <Rs.Input type="text" name="timeTo" placeholder="dd/mm/yyyy" />
+                  <Rs.Input
+                    type="text"
+                    name="timeTo"
+                    placeholder="dd/mm/yyyy"
+                    onChange={(e) => this.handleDateChange('to', e.target.value)}
+                  />
                 </Rs.Col>
               </Rs.Row>
             </Rs.FormGroup>
-
             <CustomCardRow>
-              <Rs.Col sm="4">
-                <Rs.Card>
-                  <Rs.CardImg top width="100%" src="https://images.unsplash.com/photo-1505343011179-ffb744ab9bef?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D" alt="" />
-                  <Rs.CardBody>
-                    <Rs.CardSubtitle>Hyatt Regency</Rs.CardSubtitle>
-                  </Rs.CardBody>
-                </Rs.Card>
-              </Rs.Col>
-
-              <Rs.Col sm="4">
-                <Rs.Card>
-                  <Rs.CardImg top width="100%" src="https://images.unsplash.com/photo-1508922450598-2f5b1193950a?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D" alt="" />
-                  <Rs.CardBody>
-                    <Rs.CardSubtitle>Mee Mountain</Rs.CardSubtitle>
-                  </Rs.CardBody>
-                </Rs.Card>
-              </Rs.Col>
-
-              <Rs.Col sm="4">
-                <Rs.Card>
-                  <Rs.CardImg top width="100%" src="https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D" alt="" />
-                  <Rs.CardBody>
-                    <Rs.CardSubtitle>Haiku Stairs</Rs.CardSubtitle>
-                  </Rs.CardBody>
-                </Rs.Card>
-              </Rs.Col>
-
-              <Rs.Col sm="4">
-                <Rs.Card>
-                  <Rs.CardImg top width="100%" src="https://images.unsplash.com/photo-1496153615838-861aed350146?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D" alt="" />
-                  <Rs.CardBody>
-                    <Rs.CardSubtitle>Atlnafeadh</Rs.CardSubtitle>
-                  </Rs.CardBody>
-                </Rs.Card>
-              </Rs.Col>
-
-              <Rs.Col sm="4">
-                <Rs.Card>
-                  <Rs.CardImg top width="100%" src="https://images.unsplash.com/photo-1493540554008-8e3008329feb?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D" alt="" />
-                  <Rs.CardBody>
-                    <Rs.CardSubtitle>Pickle Rick</Rs.CardSubtitle>
-                  </Rs.CardBody>
-                </Rs.Card>
-              </Rs.Col>
+              { desArr.map((item, index) => (
+                  <Rs.Col key={index} sm="4">
+                    <Rs.Card onClick={() => this.handleDestinationChange(item)}>
+                      <Rs.CardImg top width="100%" src={item.image} alt="" />
+                      <Rs.CardBody>
+                        <Rs.CardSubtitle>{item.name}</Rs.CardSubtitle>
+                      </Rs.CardBody>
+                    </Rs.Card>
+                  </Rs.Col>
+              ))}
             </CustomCardRow>
           </Rs.Col>
         </WrapperBlock>
@@ -166,35 +276,17 @@ class CreatePlan extends React.Component {
           <Rs.Col sm="12">
             <p>Base on your selected place, we recommend you some hotels.</p>
             <CustomCardRow>
-              <Rs.Col sm="4">
-                <Rs.Card>
-                  <Rs.CardImg top width="100%" src="https://images.unsplash.com/photo-1440151050977-247552660a3b?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D" />
-                  <Rs.CardBody>
-                    <Rs.CardSubtitle>Balchik hotel</Rs.CardSubtitle>
-                    <Rs.CardText>$500 per night</Rs.CardText>
-                  </Rs.CardBody>
-                </Rs.Card>
-              </Rs.Col>
-
-              <Rs.Col sm="4">
-                <Rs.Card>
-                  <Rs.CardImg top width="100%" src="https://images.unsplash.com/photo-1468824357306-a439d58ccb1c?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D" alt="" />
-                  <Rs.CardBody>
-                    <Rs.CardSubtitle>Dubai hotel</Rs.CardSubtitle>
-                    <Rs.CardText>$1500 per night</Rs.CardText>
-                  </Rs.CardBody>
-                </Rs.Card>
-              </Rs.Col>
-
-              <Rs.Col sm="4">
-                <Rs.Card>
-                  <Rs.CardImg top width="100%" src="https://images.unsplash.com/photo-1489516408517-0c0a15662682?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D" alt="" />
-                  <Rs.CardBody>
-                    <Rs.CardSubtitle>Atlantis hotel</Rs.CardSubtitle>
-                    <Rs.CardText>$900 per night</Rs.CardText>
-                  </Rs.CardBody>
-                </Rs.Card>
-              </Rs.Col>
+              { accArr.map((item, index) => (
+                <Rs.Col key={index} sm="4">
+                  <Rs.Card onClick={() => this.handleAccommodationChange(item)}>
+                    <Rs.CardImg top width="100%" src={item.image} />
+                    <Rs.CardBody>
+                      <Rs.CardSubtitle>{item.name}</Rs.CardSubtitle>
+                      <Rs.CardText>${item.price} per night</Rs.CardText>
+                    </Rs.CardBody>
+                  </Rs.Card>
+                </Rs.Col>
+              ))}
             </CustomCardRow>
           </Rs.Col>
         </WrapperBlock>
@@ -203,7 +295,7 @@ class CreatePlan extends React.Component {
           <Rs.Button
             outline
             color="secondary"
-            onClick={this.gotoTraveler}
+            onClick={this.gotoTraveller}
             style={{ marginRight: 10 }}
           >
             Cancel
@@ -211,7 +303,7 @@ class CreatePlan extends React.Component {
           <Rs.Button
             type="submit"
             color="primary"
-            onClick={this.gotoView}
+            onClick={this.handleSubmit}
           >
             OK
           </Rs.Button>
