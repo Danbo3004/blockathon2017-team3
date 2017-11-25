@@ -3,5 +3,4 @@ node_modules
 *.log
 coverage
 yarn.lock
-dist
 build
