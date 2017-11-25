@@ -12,5 +12,10 @@ module.exports = function (app) {
     router.get('/accommodation', accommodation.get)
     router.post('/accommodation', accommodation.create)
 
+    var transportation = require('./controllers/transportation')
+    router.get('/transportations', transportation.getAll)
+    router.get('/transportation', transportation.get)
+    router.post('/transportation', transportation.create)
+
     app.use('/api/v1', router)
 }
