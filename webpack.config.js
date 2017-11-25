@@ -21,6 +21,9 @@ module.exports = {
       inject: 'body',
       filename: 'index.html'
     }),
+    new webpack.ProvidePlugin({
+      fetch: 'exports-loader?self.fetch!whatwg-fetch',
+    }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
@@ -52,7 +55,7 @@ module.exports = {
             "presets": ["react-hmre"]
           }
         }
-      
+
       }
     }, {
       test: /\.json?$/,

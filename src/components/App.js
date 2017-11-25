@@ -13,9 +13,9 @@ import PartnerLogin    from './PartnerLogin.js'
 import Host            from './Host.js'
 import HostConfirm     from './HostConfirm.js'
 
-import Traveler        from './Traveler/Traveler.js'
-import TravelerEdit    from './Traveler/TravelerEdit.js'
-import TravelerConfirm from './Traveler/TravelerConfirm.js'
+import Traveller        from './Traveller/Traveller.js'
+import TravellerEdit    from './Traveller/TravellerEdit.js'
+import TravellerConfirm from './Traveller/TravellerConfirm.js'
 import CreatePlan      from './Plan/CreatePlan.js'
 import ViewPlan        from './Plan/ViewPlan.js'
 
@@ -59,9 +59,9 @@ export default class App extends React.Component {
           <Route path='/host'             component={Host}/>
           <Route path='/host-confirm'     component={HostConfirm}/>
 
-          <Route exact path='/traveler' component={withRouter(Traveler)} />
-          <Route path='/traveler/edit' component={withRouter(TravelerEdit)} />
-          <Route path='/traveler/confirm' component={withRouter(TravelerConfirm)} />
+          <Route exact path='/traveller' component={withRouter(Traveller)} />
+          <Route path='/traveller/edit' component={withRouter(TravellerEdit)} />
+          <Route path='/traveller/confirm' component={withRouter(TravellerConfirm)} />
           <Route path='/plan/create' component={withRouter(CreatePlan)} />
           <Route path='/plan/view' component={withRouter(ViewPlan)} />
         </Switch>

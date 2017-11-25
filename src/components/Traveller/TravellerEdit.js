@@ -40,7 +40,7 @@ const UserAvatar = styled.div`
   }
 `
 
-class TravelerEdit extends React.Component {
+class TravellerEdit extends React.Component {
   constructor(props) {
     super(props)
     const locationState = props.location.state
@@ -56,9 +56,9 @@ class TravelerEdit extends React.Component {
   }
 
   goBack() {
-    this.props.history.push('/traveler')
+    this.props.history.push('/traveller')
   }
-  
+
   handleChangeFor(key) {
     return (event) => {
       this.setState({
@@ -69,7 +69,7 @@ class TravelerEdit extends React.Component {
 
   handleConfirmEdit(ev) {
     ev.preventDefault()
-    this.props.history.push('/traveler', {
+    this.props.history.push('/traveller', {
       ...this.state,
     })
   }
@@ -83,7 +83,7 @@ class TravelerEdit extends React.Component {
 
     return (
       <Wrapper>
-        <h2>Traveler Profile</h2>
+        <h2>Traveller Profile</h2>
         <Form onSubmit={this.handleConfirmEdit}>
           <Row>
             <Col xs="12" sm="2">
@@ -136,4 +136,4 @@ class TravelerEdit extends React.Component {
   }
 }
 
-export default TravelerEdit
+export default TravellerEdit

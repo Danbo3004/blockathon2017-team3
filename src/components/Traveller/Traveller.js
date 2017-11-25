@@ -53,7 +53,7 @@ const CenterButton = styled(Row)`
   justify-content: center;
 `
 
-class Traveler extends React.Component {
+class Traveller extends React.Component {
   constructor(props) {
     super(props)
     const locationState = props.location.state
@@ -68,7 +68,7 @@ class Traveler extends React.Component {
   }
 
   gotoEdit() {
-    this.props.history.push('/traveler/edit', {
+    this.props.history.push('/traveller/edit', {
       ...this.state,
     })
   }
@@ -86,7 +86,7 @@ class Traveler extends React.Component {
 
     return (
       <Wrapper>
-        <h2 className="title-profile">Traveler Profile</h2>
+        <h2 className="title-profile">Traveller Profile</h2>
         <Row>
           <Col xs="12" sm="2">
             <UserAvatar>
@@ -118,4 +118,4 @@ class Traveler extends React.Component {
   }
 }
 
-export default Traveler
+export default Traveller

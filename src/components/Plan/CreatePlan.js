@@ -1,7 +1,6 @@
 import React from 'react'
 import * as Rs from 'reactstrap'
 import styled from 'styled-components'
-import classnames from 'classnames'
 
 const Wrapper = styled(Rs.Container)`
   max-width: 700px !important;
