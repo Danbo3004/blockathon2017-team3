@@ -17,6 +17,7 @@ import Traveler        from './Traveler/Traveler.js'
 import TravelerEdit    from './Traveler/TravelerEdit.js'
 import TravelerConfirm from './Traveler/TravelerConfirm.js'
 import CreatePlan      from './Plan/CreatePlan.js'
+import ViewPlan        from './Plan/ViewPlan.js'
 
 // import VotingJSON from '../contracts/Voting.json'
 // const provider = new Web3.providers.HttpProvider('http://www.blockathon.asia:8545/')
@@ -62,7 +63,7 @@ export default class App extends React.Component {
           <Route path='/traveler/edit' component={withRouter(TravelerEdit)} />
           <Route path='/traveler/confirm' component={withRouter(TravelerConfirm)} />
           <Route path='/plan/create' component={withRouter(CreatePlan)} />
-          <Route path='/plan/preview' component={withRouter(CreatePlan)} />
+          <Route path='/plan/view' component={withRouter(ViewPlan)} />
         </Switch>
       </Router>
     )
