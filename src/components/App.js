@@ -1,5 +1,5 @@
 import React from 'react'
-import * as Web3 from 'web3'
+import Web3 from 'web3'
 import * as contract from 'truffle-contract'
 import {
   BrowserRouter as Router,
@@ -19,11 +19,25 @@ import TravellerConfirm from './Traveller/TravellerConfirm.js'
 import CreatePlan      from './Plan/CreatePlan.js'
 import ViewPlan        from './Plan/ViewPlan.js'
 
-// import VotingJSON from '../contracts/Voting.json'
-// const provider = new Web3.providers.HttpProvider('http://www.blockathon.asia:8545/')
-// const web3 = new Web3(provider)
-// const VotingContract = contract(VotingJSON)
-// VotingContract.setProvider(provider)
+
+function checkAndInstantiateWeb3() {
+    console.log("Instantiating web3")
+    if (typeof window['web3'] !== 'undefined') {
+      console.warn("Using web3 detected from external source.")
+      return new Web3(window['web3'].currentProvider)
+    } else {
+      console.warn("No web3 detected. Falling back to http://localhost:8545.")
+      return new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
+    }
+}
+
+const newWeb3 = checkAndInstantiateWeb3()
+
+newWeb3.eth.getAccounts((err, accounts) => {
+  if (!err) {
+    console.log(accounts);
+  }
+})
 
 export default class App extends React.Component {
   // componentDidMount() {
