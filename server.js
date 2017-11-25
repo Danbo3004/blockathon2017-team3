@@ -6,6 +6,8 @@ const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('./webpack.config.js');
+var bodyParser = require('body-parser')
+const multer = require('multer')
 
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const app = express();
@@ -29,16 +31,21 @@ if (isDeveloping) {
   app.use(webpackHotMiddleware(compiler, {
     heartbeat: 2000,
   }));
-  app.get('*', function response(req, res) {
-    res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')));
-    res.end();
-  });
+  // app.get('*', function response(req, res) {
+  //   res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')));
+  //   res.end();
+  // });
 } else {
   app.use(express.static(__dirname + '/dist'));
   app.get('/', function response(req, res) {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
   });
 }
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+
+require('./server/router')(app)
 
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'), function onStart(err) {
