@@ -50,6 +50,8 @@ export default class Login extends Component {
         if(password != 123) alert('wrong password')
         const owner = users.find(user => user.email == id)
         localStorage.setItem('owner', owner._id)
+        localStorage.setItem('fullName', owner.fullName)
+        localStorage.setItem('avatar', owner.avatar)
         this.props.history.push('/traveller')
     }
 }

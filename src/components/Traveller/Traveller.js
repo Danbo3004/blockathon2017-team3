@@ -72,7 +72,7 @@ class Traveller extends React.Component {
     this.state = {
       plans: [],
       userAvatar: locationState ? locationState.userAvatar : 'https://s3.amazonaws.com/uifaces/faces/twitter/mlane/128.jpg',
-      userName: locationState ? locationState.userName : 'Dang Kieu',
+      userName: locationState ? locationState.userName : localStorage.fullName,
       userBio: locationState ? locationState.userBio : 'I\'ve lived in Tokyo for more than ten years, working in the fashion industry and running Tokyo Fashionista Events. This has given me many connections to amazing people and great nightlife experiences, and I\'m excited to share them both with you.',
       modal: false,
       currentPlan: '',
