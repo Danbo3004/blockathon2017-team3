@@ -13,16 +13,15 @@ exports.getAll = (req, res) => {
 
 exports.create = function(req, res) {
     try {
-        debugger
-        var data = req.body.data
+        var data = req.body
         var db = require('../../database')
+        var Accommodation = require('../models/accommodation')(db);
         var newAccommodation = {
             name    : data.name,
             image   : data.image,
             price   : data.price,
         }
         new Accommodation(newAccommodation).save((err, newAcc) => {
-            debugger
             if(err) res.send('Error: ' + err)
             res.send(newAcc)
         })

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
 
-var Schema = mongoose.Shema
+var Schema = mongoose.Schema
 var Mixed = Schema.Types.Mixed
 
 var Accommodation = new Schema({
@@ -8,3 +8,7 @@ var Accommodation = new Schema({
     image   : { type: String, default: ''},
     price   : { type: Number, default: 0},
 })
+
+module.exports = (db) => {
+    return db.model('Accommodation', Accommodation)
+}
