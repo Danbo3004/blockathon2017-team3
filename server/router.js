@@ -26,6 +26,12 @@ module.exports = function (app) {
     router.get('/plans', plan.getAll)
     router.get('/plan', plan.get)
     router.post('/plan', plan.create)
+    router.put('/plan/add-trip-mate', plan.addTripMate)
+
+    var user = require('./controllers/user')
+    router.get('/users', user.getAll)
+    router.get('/user', user.get)
+    router.post('/user', user.create)
 
     app.use('/api/v1', router)
 }

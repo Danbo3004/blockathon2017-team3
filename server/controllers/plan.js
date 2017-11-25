@@ -48,7 +48,8 @@ exports.create = function (req, res) {
         var newPlan = {
             transportation: data.transportation,
             calendar: data.calendar,
-            accommodation: data.accommodation
+            accommodation: data.accommodation,
+            owner: data.owner,
         }
         new Plan(newPlan).save((err, newPln) => {
             if (err) res.send('Error: ' + err)
@@ -56,5 +57,31 @@ exports.create = function (req, res) {
         })
     } catch (e) {
         res.send('Error: ' + e.message);
+    }
+}
+
+exports.addTripMate = (req, res) => {
+    try {
+        var data = req.body
+        var _id = data.id
+        var db = require('../../database')
+        var Plan = require('../models/plan')(db)
+        Plan.findOne({ _id }).exec((err, plan) => {
+            if(Array.isArray(plan.tripMates)) {
+                plan.tripMates = []
+                plan.tripMates.push(data.tripMate)
+            } else {
+                if(plan.tripMates.some(person => person == data.tripMate)) {
+                    res.send(plan)
+                }
+                plan.tripMates.push(data.tripMate)
+            }
+            plan.save((err, newPln) => {
+                if(err) res.send('Error: ' + err)
+                res.send(newPln)
+            })
+        })
+    } catch(e) {
+        res.send('Error: ' + e.message)
     }
 }
