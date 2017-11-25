@@ -99,8 +99,8 @@ class CreatePlan extends React.Component {
       accommodation: {},
       calendar: {
         destination: {},
-        from: '',
-        to: '',
+        from: '25/11/2017',
+        to: '30/11/2017',
       },
     }
 

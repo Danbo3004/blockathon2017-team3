@@ -1,12 +1,15 @@
 import React from 'react'
-import Web3 from 'web3'
-import * as contract from 'truffle-contract'
+import PropTypes from 'prop-types'
+import contract from 'truffle-contract'
 import {
   BrowserRouter as Router,
   Route,
   Switch,
   withRouter,
 } from 'react-router-dom'
+
+import { initWeb3 } from '../utils/web3.js'
+import ContractJSON from '../contracts/P2Gether.json'
 
 import Login           from './Login.js'
 import PartnerLogin    from './PartnerLogin.js'
@@ -19,51 +22,11 @@ import TravellerConfirm from './Traveller/TravellerConfirm.js'
 import CreatePlan      from './Plan/CreatePlan.js'
 import ViewPlan        from './Plan/ViewPlan.js'
 
+window.web3 = initWeb3()
+window.contract = contract(ContractJSON)
+window.contract.setProvider(web3.currentProvider)
 
-function checkAndInstantiateWeb3() {
-    console.log("Instantiating web3")
-    if (typeof window['web3'] !== 'undefined') {
-      console.warn("Using web3 detected from external source.")
-      return new Web3(window['web3'].currentProvider)
-    } else {
-      console.warn("No web3 detected. Falling back to http://localhost:8545.")
-      return new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
-    }
-}
-
-const newWeb3 = checkAndInstantiateWeb3()
-
-newWeb3.eth.getAccounts((err, accounts) => {
-  if (!err) {
-    console.log(accounts);
-  }
-})
-
-export default class App extends React.Component {
-  // componentDidMount() {
-  //   this.state.candidateList.map((candidate, index) => {
-  //     VotingContract.deployed()
-  //       .then((instance) => {
-  //         return instance.totalVoteFor.call(candidate.name)
-  //       })
-  //       .then((result) => {
-  //         let arr = this.state.candidateList.map((item) => {
-  //           if (item.name === candidate.name) {
-  //             item.vote = result.toString()
-  //           }
-  //           return item
-  //         })
-
-  //         this.setState({
-  //           candidateList: arr,
-  //         })
-  //       })
-  //       .catch((err) => {
-  //         console.log(err.message)
-  //       })
-  //   })
-  // }
-
+class App extends React.Component {
   render() {
     return (
       <Router>
@@ -82,3 +45,5 @@ export default class App extends React.Component {
     )
   }
 }
+
+export default App

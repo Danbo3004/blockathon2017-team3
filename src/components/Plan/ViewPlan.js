@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import * as Rs from 'reactstrap'
 import styled from 'styled-components'
 import classnames from 'classnames'
@@ -52,11 +53,12 @@ const BottomButtons = styled(Rs.Row)`
   margin: 20px 0;
 `
 
-class CreatePlan extends React.Component {
+class ViewPlan extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       modal: false,
+      account: '',
       eth: 0,
     }
 
@@ -64,6 +66,7 @@ class CreatePlan extends React.Component {
     this.ethToDeposit = this.ethToDeposit.bind(this)
     this.backtoCreatePlan = this.backtoCreatePlan.bind(this)
     this.gotoTraveler = this.gotoTraveler.bind(this)
+    this.createTransaction = this.createTransaction.bind(this)
   }
 
   toggle() {
@@ -82,6 +85,19 @@ class CreatePlan extends React.Component {
 
   ethToDeposit(value) {
     this.setState({ eth: value })
+  }
+
+  createTransaction() {
+    const eth = this.state.eth
+    window.contract.deployed()
+      .then((instance) => {
+        return instance.sendTransaction({
+          from: '0xca1339515180067866fd410f2eb624fb18614659',
+          to: instance.address,
+          value: window.web3.toWei(eth, 'ether'),
+          gas: 300000,
+        })
+      })
   }
 
   render() {
@@ -182,7 +198,7 @@ class CreatePlan extends React.Component {
             <Rs.InputGroup>
               <Rs.Input placeholder="ex: 1 ETH" onChange={(ev) => this.ethToDeposit(ev.target.value)} />
               <Rs.InputGroupButton>
-                <Rs.Button onClick={(ev) => console.log('deposit', this.state.eth)}>Deposit</Rs.Button>
+                <Rs.Button onClick={this.createTransaction}>Deposit</Rs.Button>
               </Rs.InputGroupButton>
             </Rs.InputGroup>
           </Rs.ModalBody>
@@ -195,4 +211,4 @@ class CreatePlan extends React.Component {
   }
 }
 
-export default CreatePlan
+export default ViewPlan
