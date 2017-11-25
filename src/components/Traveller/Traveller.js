@@ -4,11 +4,18 @@ import {
   Card,
   CardImg,
   CardBody,
+  CardSubtitle,
   CardTitle,
   CardText,
   Row,
   Col,
   Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Input,
+  InputGroup,
+  InputGroupButton,
 } from 'reactstrap'
 import styled from 'styled-components'
 import request from '../../utils/request'
@@ -67,10 +74,16 @@ class Traveller extends React.Component {
       userAvatar: locationState ? locationState.userAvatar : 'https://s3.amazonaws.com/uifaces/faces/twitter/mlane/128.jpg',
       userName: locationState ? locationState.userName : 'Dang Kieu',
       userBio: locationState ? locationState.userBio : 'I\'ve lived in Tokyo for more than ten years, working in the fashion industry and running Tokyo Fashionista Events. This has given me many connections to amazing people and great nightlife experiences, and I\'m excited to share them both with you.',
+      modal: false,
+      currentPlan: '',
+      eth: 0,
     }
 
+    this.ethToDeposit = this.ethToDeposit.bind(this)
     this.gotoEdit = this.gotoEdit.bind(this)
     this.gotoCreatePlan = this.gotoCreatePlan.bind(this)
+    this.joinPlan = this.joinPlan.bind(this)
+    this.toggleModal = this.toggleModal.bind(this)
   }
 
   componentDidMount() {
@@ -78,7 +91,7 @@ class Traveller extends React.Component {
       method: 'GET',
     }).then((result) => {
       this.setState({
-        plans: result,
+        plans: result.filter(rs => rs.onwer !== localStorage.owner),
       })
     })
   }
@@ -91,6 +104,40 @@ class Traveller extends React.Component {
 
   gotoCreatePlan() {
     this.props.history.push('/plan/create')
+  }
+
+  toggleModal(planId) {
+    this.setState((prevState) => ({
+      currentPlan: planId,
+      modal: !prevState.modal,
+    }))
+  }
+
+  ethToDeposit(value) {
+    this.setState({ eth: value })
+  }
+
+  joinPlan() {
+    const eth = this.state.eth
+    request(`${localStorage.origin}/api/v1/plan/add-trip-mate`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tripMate: localStorage.owner || '',
+        id: this.state.currentPlan,
+      }),
+    }).then((result) => {
+      console.log(result)
+      window.contract.deployed()
+        .then((instance) => {
+          return instance.joinPlan(result._id, {
+            from: '0xEdaF7259cADb03a7e3C3DC5cA9a69A9A2bd17681',
+            to: instance.address,
+            gas: 300000,
+            value: window.web3.toWei(eth, 'ether'),
+          })
+        })
+    })
   }
 
   render() {
@@ -131,18 +178,31 @@ class Traveller extends React.Component {
         </CenterButton>
 
         <Row>
-          { this.state.plans && this.state.plans.map((plan) => (
-            <Col sm="4">
+          { this.state.plans && this.state.plans.map((plan, index) => (
+            <Col key={index} sm="4" style={{ marginTop: 20 }}>
               <Card>
                 <CardImg top width="100%" src={plan.calendar.destination.image || ''} alt="Card image cap" />
                 <CardBody>
                   <CardTitle>{plan.calendar.destination.name || ''}</CardTitle>
-                  <Button>Join</Button>
+                  <CardSubtitle></CardSubtitle>
+                  <Button onClick={() => this.toggleModal(plan._id)}>Join</Button>
                 </CardBody>
               </Card>
             </Col>
           ))}
         </Row>
+
+        <Modal isOpen={this.state.modal} toggle={this.toggleModal}>
+          <ModalHeader toggle={this.toggle}>Join Plan</ModalHeader>
+          <ModalBody>
+            <InputGroup>
+              <Input placeholder="ex: 1 ETH" onChange={(ev) => this.ethToDeposit(ev.target.value)} />
+              <InputGroupButton>
+                <Button onClick={() => this.joinPlan()}>Deposit</Button>
+              </InputGroupButton>
+            </InputGroup>
+          </ModalBody>
+        </Modal>
       </Wrapper>
     )
   }

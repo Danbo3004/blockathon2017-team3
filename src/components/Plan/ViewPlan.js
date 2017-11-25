@@ -93,7 +93,7 @@ class ViewPlan extends React.Component {
     const accommodation = JSON.parse(localStorage.getItem('accommodation'))
     const calendar = JSON.parse(localStorage.getItem('calendar'))
 
-    request(`${apiBase}/plan`, {
+    request(`${localStorage.origin}/api/v1/plan`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -102,11 +102,14 @@ class ViewPlan extends React.Component {
         calendar: calendar._id,
         owner: localStorage.owner || ''
       })
-    }).then(() => {
+    }).then((result) => {
+      // console.log(result)
       window.contract.deployed()
         .then((instance) => {
-          return instance.sendTransaction({
-            from: '0x01991cb9430641e5869b2ff99849e201a69ddbc3',
+          // console.log(instance)
+          console.log(web3.eth.accounts)
+          return instance.createPlan(result._id, {
+            from: '0xEdaF7259cADb03a7e3C3DC5cA9a69A9A2bd17681',
             to: instance.address,
             value: window.web3.toWei(eth, 'ether'),
             gas: 300000,
@@ -239,11 +242,6 @@ class ViewPlan extends React.Component {
               </Rs.InputGroupButton>
             </Rs.InputGroup>
           </Rs.ModalBody>
-          {
-            // <Rs.ModalFooter>
-            //   <Rs.Button color="primary" onClick={this.gotoTraveller}>Submit</Rs.Button>
-            // </Rs.ModalFooter>
-          }
         </Rs.Modal>
       </Wrapper>
     )

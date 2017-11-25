@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom'
 
 import { initWeb3 } from '../utils/web3.js'
-import ContractJSON from '../contracts/P2Gether.json'
+import ContractJSON from '../../build/contracts/P2Gether.json'
 
 import Login           from './Login.js'
 import PartnerLogin    from './PartnerLogin.js'
