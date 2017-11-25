@@ -104,7 +104,9 @@ contract P2Gether {
                     plans[_planIndex].joinList[i].transfer(perShare);
                 }
                 
-                owner.transfer(surplus);
+                if (surplus > 0) {
+                    owner.transfer(surplus);
+                }
             }
         }
 
