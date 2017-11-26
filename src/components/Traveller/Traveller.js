@@ -65,6 +65,11 @@ const CenterButton = styled(Row)`
   justify-content: center;
 `
 
+function convertDate(str) {
+  const d = (new Date(str)).toString().split(' ')
+  return `${d[1]} ${d[2]} ${d[3]}`
+}
+
 class Traveller extends React.Component {
   constructor(props) {
     super(props)
@@ -83,6 +88,7 @@ class Traveller extends React.Component {
     this.gotoEdit = this.gotoEdit.bind(this)
     this.gotoCreatePlan = this.gotoCreatePlan.bind(this)
     this.joinPlan = this.joinPlan.bind(this)
+    this.startPlan = this.startPlan.bind(this)
     this.toggleModal = this.toggleModal.bind(this)
   }
 
@@ -94,6 +100,10 @@ class Traveller extends React.Component {
         plans: result.filter(rs => rs.onwer !== localStorage.owner),
       })
     })
+
+    window.contract.deployed()
+    .then((instance) => instance.PlanStarted(null, { fromBlock: 0, toBlock: 'latest'}))
+    .then((rs) => console.log(rs))
   }
 
   gotoEdit() {
@@ -140,6 +150,20 @@ class Traveller extends React.Component {
     })
   }
 
+  startPlan(planId) {
+    const eth = this.state.eth
+    window.contract.deployed()
+      .then((instance) => {
+        return instance.startPlan(planId, {
+          from: '0xEdaF7259cADb03a7e3C3DC5cA9a69A9A2bd17681',
+          to: instance.address,
+          gas: 300000,
+        })
+        // return instance.startPlan(planId)
+      })
+      .then((rs) => console.log(rs))
+  }
+
   render() {
     const {
       userAvatar,
@@ -177,19 +201,44 @@ class Traveller extends React.Component {
           </Button>
         </CenterButton>
 
+        <h3>My Plans</h3>
         <Row>
-          { this.state.plans && this.state.plans.map((plan, index) => (
-            <Col key={index} sm="4" style={{ marginTop: 20 }}>
-              <Card>
-                <CardImg top width="100%" src={plan.calendar.destination.image || ''} alt="Card image cap" />
-                <CardBody>
-                  <CardTitle>{plan.calendar.destination.name || ''}</CardTitle>
-                  <CardSubtitle></CardSubtitle>
-                  <Button onClick={() => this.toggleModal(plan._id)}>Join</Button>
-                </CardBody>
-              </Card>
-            </Col>
-          ))}
+          { this.state.plans && this.state.plans
+              .filter((plan) => localStorage.owner === plan.owner)
+              .map((plan, index) => (
+                <Col key={index} sm="4" style={{ marginTop: 20 }}>
+                  <Card>
+                    <CardImg top width="100%" src={plan.calendar.destination.image || ''} alt="Card image cap" />
+                    <CardBody>
+                      <CardTitle>{plan.calendar.destination.name || ''}</CardTitle>
+                      <CardText>From: {convertDate(plan.calendar.from)}</CardText>
+                      <Button onClick={() => this.startPlan(plan._id)}>Start plan</Button>
+                    </CardBody>
+                  </Card>
+                </Col>
+              ))
+          }
+        </Row>
+
+        <br />
+
+        <h3>Other Plans</h3>
+        <Row>
+          { this.state.plans && this.state.plans
+              .filter((plan) => localStorage.owner !== plan.owner)
+              .map((plan, index) => (
+                <Col key={index} sm="4" style={{ marginTop: 20 }}>
+                  <Card>
+                    <CardImg top width="100%" src={plan.calendar.destination.image || ''} alt="Card image cap" />
+                    <CardBody>
+                      <CardTitle>{plan.calendar.destination.name || ''}</CardTitle>
+                      <CardText>From: {convertDate(plan.calendar.from)}</CardText>
+                      <Button onClick={() => this.toggleModal(plan._id)}>Join</Button>
+                    </CardBody>
+                  </Card>
+                </Col>
+              ))
+          }
         </Row>
 
         <Modal isOpen={this.state.modal} toggle={this.toggleModal}>

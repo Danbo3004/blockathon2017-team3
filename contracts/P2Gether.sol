@@ -128,10 +128,10 @@ contract P2Gether {
         return true;
     }
 
-    function startPlan(bytes planId) payable public returns (bool) {
+    function startPlan(bytes planId) public returns (bool) {
         require(plans[planId].hostAddress == msg.sender);
         require(plans[planId].status == PLAN_STAUS_WAITING);
-        require(now > plans[planId].endTime);
+        // require(now > plans[planId].endTime);
 
         plans[planId].hostAddress.transfer(plans[planId].total);  
         plans[planId].status = PLAN_STAUS_STARTED;
