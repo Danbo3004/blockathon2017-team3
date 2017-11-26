@@ -42,6 +42,12 @@ To start with some pre-funded account(s)
 
 - Wallet : Rinkerby Network on MyEtherWallet
 
-Private key: bc38c9c15a83387e6544299373083c1583426218dd0d97840292f55dad09a6a1
+Private key: `bc38c9c15a83387e6544299373083c1583426218dd0d97840292f55dad09a6a1`
 
-Address: 0xEdaF7259cADb03a7e3C3DC5cA9a69A9A2bd17681
+Address: `0xEdaF7259cADb03a7e3C3DC5cA9a69A9A2bd17681`
+
+# Application Test
+- Account:
++ phamminhquan@yopmail.com 123
++ vuhoangkhanh@yopmail.com 123
++ kieutridang@yopmail.com 123
