@@ -83,4 +83,13 @@ contract('P2GetherTestGeneric', function (accounts) {
         assert.equal(web3.eth.getBalance(p2Gether.address).toString(), toWei(2));
     });
 
+    it("The P2Gether", async function () {
+        plan = await p2Gether.createPlan.sendTransaction(plainId, { from: args._user1, to: p2Gether.address, value: toWei(2) });
+        await p2Gether.joinPlan.sendTransaction(plainId, { from: args._user2, to: p2Gether.address, value: toWei(2) });
+        assert.equal(web3.eth.getBalance(p2Gether.address).toString(), toWei(4));
+
+        plan = await p2Gether.startPlan(plainId, { from: args._user1, to: p2Gether.address});
+        assert.equal(web3.eth.getBalance(p2Gether.address).toString(), 0);
+    });
+
 });
